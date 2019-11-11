@@ -1,6 +1,6 @@
 import AlgaeAPI from '@lichen/algae-api'
 
-export const connector = new AlgaeAPI('Datasource Connector').visual('./index.html')
+export const connector = new AlgaeAPI('Datasource Connector').visual('./src/view/index.html')
 export const ports = {
   datasourceName: 'Datasource Name',
   apiURL: 'API URL',

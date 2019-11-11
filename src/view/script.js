@@ -1,12 +1,10 @@
-/* global localStorage, parent */
-
 import { connector, ports } from '../../algaefile.js'
 import { getDatasourceURL, loadDatasourceMetadata } from '../main.js'
 
 let datasourceName
-let apiURL = 'https://api.lichen.com'
-let organizationID = localStorage.orgPubId
-let authToken = parent.getSessionToken()
+let apiURL
+let organizationID
+let authToken
 
 connector.addEventListener(ports.datasourceName, (/** @type {CustomEvent} */ event) => {
   datasourceName = event.detail
@@ -14,17 +12,17 @@ connector.addEventListener(ports.datasourceName, (/** @type {CustomEvent} */ eve
 })
 
 connector.addEventListener(ports.apiURL, (/** @type {CustomEvent} */ event) => {
-  apiURL = event.detail || 'https://api.lichen.com'
+  apiURL = event.detail
   load()
 })
 
 connector.addEventListener(ports.organizationID, (/** @type {CustomEvent} */ event) => {
-  organizationID = event.detail || localStorage.orgPubId
+  organizationID = event.detail
   load()
 })
 
 connector.addEventListener(ports.authToken, (/** @type {CustomEvent} */ event) => {
-  authToken = event.detail || parent.getSessionToken()
+  authToken = event.detail
   load()
 })
 
@@ -32,14 +30,16 @@ const Main = document.getElementById('Main')
 const Spinner = document.getElementById('Spinner')
 
 const load = async () => {
-  if (!datasourceName) {
+  console.log('[Algae]', datasourceName, apiURL, organizationID, authToken)
+
+  if (!datasourceName || !organizationID || !authToken) {
     return
   }
 
   Main.innerText = 'Loading...'
   Spinner.classList.add('show')
 
-  const datasource = await loadDatasourceMetadata(getDatasourceURL(apiURL, organizationID, datasourceName), authToken)
+  const datasource = await loadDatasourceMetadata(getDatasourceURL(apiURL || 'https://api.lichen.com', organizationID, datasourceName), authToken)
 
   Main.innerText = 'Loaded!'
   Spinner.classList.remove('show')
