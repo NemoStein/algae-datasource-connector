@@ -47,3 +47,18 @@ export const loadDatasourceMetadata = async (datasourceURL, authToken, signal) =
     console.log(`Failed to read datasource "${datasourceURL}"`, error)
   }
 }
+
+/**
+ * Converts the object returned from `loadDatasourceMetadata` to a suitable format to be used in Nest
+ *
+ * @param {Object} metadata
+ *
+ * @returns {Object} An object to be passed  Nest
+ */
+export const convertMetadataToNest = metadata => {
+  if (!metadata) {
+    return
+  }
+
+  return {}
+}
