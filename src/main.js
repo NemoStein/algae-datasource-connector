@@ -49,13 +49,29 @@ export const loadDatasourceMetadata = async (datasourceURL, authToken, signal) =
 }
 
 /**
- * Converts the object returned from `loadDatasourceMetadata` to a suitable format to be used in Nest
+ * Converts the metadata object to a suitable format to be used in DDVEventHandle
  *
  * @param {Object} metadata
  *
  * @returns {Object} An object to be passed  Nest
  */
-export const convertMetadataToNest = metadata => {
+export const metadataToDEH = metadata => {
+  if (!metadata || metadata.type !== 'postgres' || metadata.type !== 'redshift') {
+    return
+  }
+
+  return metadata.config.credentials
+}
+
+
+/**
+ * Converts the metadata object to a suitable format to be used in Nest
+ *
+ * @param {Object} metadata
+ *
+ * @returns {Object} An object to be passed  Nest
+ */
+export const metadataToNest = metadata => {
   if (!metadata) {
     return
   }

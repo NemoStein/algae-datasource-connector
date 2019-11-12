@@ -1,5 +1,5 @@
 import AlgaeAPI from '@lichen/algae-api'
-import { convertMetadataToNest } from './src/main.js'
+import { metadataToDEH, metadataToNest } from './src/main.js'
 
 export const ports = {
   datasourceName: 'Datasource Name',
@@ -19,8 +19,11 @@ connector.defineInlet(ports.authToken, String, 'The auth token')
 
 connector.defineOutlet(ports.metadata, Object)
 
-// Converter
-export const converter = new AlgaeAPI('Datasource Metadata to Nest Object').operator(convertMetadataToNest)
+// Converters
+export const deh = new AlgaeAPI('Datasource Metadata to Nest Object').operator(metadataToNest)
+deh.defineInlet('metadata', Object)
+deh.defineOutlet('object', Object)
 
-converter.defineInlet('metadata', Object)
-converter.defineOutlet('nest', Object)
+export const nest = new AlgaeAPI('Datasource Metadata to DDVEventHandler').operator(metadataToNest)
+nest.defineInlet('metadata', Object)
+nest.defineOutlet('object', Object)
